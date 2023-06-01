@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>edit Product</title>
+</head>
+<body>
+
+<div align="center">
+	<h1>edit Product</h1>
+	<br />
+	
+	<form action="#" th:action="@{/save}" th:object="${dto}" method="post">  <!-- 컨트롤러 "/save" -->
+		<table border="0" cellpadding="10" >
+			<tr>
+				<td>product Id</td>
+				<td><input typt="text" th:field="*{id}" readonly="readonly"></td>
+			</tr>
+			<tr>
+				<td>product name</td>
+				<td><input typt="text" th:field="*{name}"></td>
+			</tr>
+			<tr>
+				<td>product brand</td>
+				<td><input typt="text" th:field="*{brand}"></td>
+			</tr>
+			<tr>
+				<td>product madein</td>
+				<td><input typt="text" th:field="*{madein}"></td>
+			</tr>
+			<tr>
+				<td>product price</td>
+				<td><input typt="text" th:field="*{price}"></td>
+			</tr>
+			
+			<tr>
+				<td colspan="2"><button type="submit" >Save</td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+</body>
+</html>

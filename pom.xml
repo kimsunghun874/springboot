@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.example</groupId>
+	<artifactId>springBoot_basic</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>springBoot_basic</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+	<dependencies>
+	
+	<!-- 플젝 생성시 자동추가  -->
+	<!-- jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+	
+		<!-- 스프링 부트 플젝생성지 추가한 dependency가 자동으로 생성  -->	
+		
+		<!-- 스프링 부트용  jdbc 라이버리  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		
+		<!--  타임리프 템플릿 관려ㅛㄴ 라이버리 : jsp 와 타임리프 중에 타음리프를 View로 사용한.(동시  사용 불각) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		
+		<!-- 필수차해야 함 (미추가 @RequestMappin,ModelAndView를 인식못함) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		
+		<!-- 마이바티스 -->
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+
+		<!-- 오라클 -->
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		
+		<!-- my sql 연동하기 -->
+		  <dependency>
+	        <groupId>mysql</groupId>
+	        <artifactId>mysql-connector-java</artifactId>
+	    </dependency>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

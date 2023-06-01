@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>product Manager</title>
+</head>
+<body>
+
+<div align="center">
+	<h1>product Manager</h1>
+	
+	<a href="new">create New Product</a><br><br>
+	
+	<table border="1" cellpadding="10">
+		<thead>
+			<tr>
+				<th>Product ID</th>
+				<th>name</th>
+				<th>Brand</th>
+				<th>MadeIn</th>
+				<th>Price</th>
+				<th>Actions</th>
+				
+			</tr>
+		
+		</thead>
+		<tbody>
+			<tr th:each="productDTO : ${list}">
+				<td th:text="${productDTO.id}">Product ID</td>
+				<td th:text="${productDTO.name}">Name</td>
+				<td th:text="${productDTO.brand}">Brand</td>
+				<td th:text="${productDTO.madein}">MadeIn</td>
+				<td th:text="${productDTO.price}">Price</td>
+				<td>
+					<a th:href="@{'/edit/'+ ${productDTO.id}}">Edit</a> &nbsp;&nbsp;&nbsp;
+					<a th:href="@{'/delete/'+ ${productDTO.id}}">Delete</a>
+		
+				
+				</td>
+			</tr>
+		</tbody>
+	
+	</table>
+	
+	<!-- 실행 : 메일클래스 우클릭 > Run As > Run On Server > Spring Bot App선택 > 크롬을 열고 직접입력 localhost:8081 -->
+</div>
+
+</body>
+</html>

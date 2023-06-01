@@ -1,0 +1,338 @@
+JPA +타임ㅁ리프 +ORACLE
+
+
+
+1. 테이블 생성
+
+scott_126 계정에서 작업
+
+DROP TABLE mvc_product_tbl CASCADE CONSTRAINTS;
+CREATE TABLE mvc_product_tbl(
+	id		number(5)    PRIMARY KEY,
+	name    varchar2(50) NOT NULL,
+	brand   varchar2(50) NOT NULL,
+	madein  varchar2(50) NOT NULL,
+	price   number(9)    NOT NULL
+);
+
+SELECT * FROM MVC_PRODUCT_TBL;
+
+-----------------------------------------------------
+2. 프로젝트 생성
+New > Spring Starter Project 
+> Name : springBoot_basic
+ Type: Maven
+ Java Version: 8
+> Dependencies 추가
+  SQL : JDBC API  
+  SQL : Spirng Data JPA
+  SQL : Oracle Driver
+  SQL : MyBatis Framework
+  Web : Spring Web
+  Template Engine : Thymeleaf
+  
+> Finish   
+
+-----------------------------------------------------
+2. application.properties
+
+# db connection(oracle) - spring context.xml
+spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username=scott_126
+spring.datasource.password=tiger
+
+# tomcat port numper
+server.port=8081
+
+# custom error page
+server.error.whitelabel.enabled=false
+
+# thymeleaf auto refresh
+spring.thymeleaf.cache=false
+
+-----------------------------------------------------
+
+3. pom.xml - 버전 체크   
+
+    <parent>
+    	<version>2.7.4</version>
+    </parent>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+	
+	
+	<!-- 플젝 생성시 자동추가 -->
+		<!-- jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<!-- 스프링 부트용 jdbc 라이브러리 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		
+		<!-- 타임리프 템플릿 관련 라이브러리 : jsp와 타임리프 중에 타임리프를 View로 사용하겠다. (동시에 사용불가)-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		
+		<!-- 필수추가해야 함 (미추가시 @RequestMapping, ModelAndView를 인식못함)  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<!-- 마이바티스 -->
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<!-- 오라클 -->
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	
+4. 플젝명 - 우클릭 > Properties > 
+   Java Build Path : jre1.8.xx
+   compiler : 1.8
+   project Facets : 1.8
+
+-----------------------------------------------------
+
+5. controller > ProductController 작성
+@Controller
+public class ProductController {
+	
+	// List
+	// http://localhost:8081
+	@RequestMapping("/")
+	public String indexHome(Model model) {
+		
+		return "index";		//타임리프 템플릿 => templates/index.html
+	}
+	
+	// Insert 버튼
+	// Edit 버튼
+	// Delete 버튼
+
+}
+
+6. src/main/resources/
+   templates > index.html 작성
+   
+   <html xmlns:th="http://www.thymeleaf.org">
+
+-----------------------------------------------------   
+
+7. 실행
+   메인메서드클래스 우클릭 > Run As > Run On Server > Spring Boot App 선택 > 
+  크롬창에서 localhost:8081 직접 실행
+
+  => index.html에서 작성한 내용이 실행   
+-----------------------------------------------------
+
+
+8. ProductDTO.java
+package com.example.springBoot_basic.dto;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="MVC_PRODUCT_TBL")
+public class ProductDTO {
+	
+	private int id;
+	private String name;
+	private String brand;
+	private String madein;
+	private int price;
+	
+	
+	// @GeneratedValue(strategy=GenerationType.IDENTITY)  // PK(id)를 AUTO_INCREMENT로 생성한 경우
+	@Id
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getBrand() {
+		return brand;
+	}
+	
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+	
+	public String getMadein() {
+		return madein;
+	}
+	
+	public void setMadein(String madein) {
+		this.madein = madein;
+	}
+	
+	public int getPrice() {
+		return price;
+	}
+	
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+}
+
+
+----------------------------------------------------
+9. dao > ProductRepository.java
+
+package com.example.springBoot_basic.dao;
+
+// 플젝 생성시 dependencies에 추가 SQL > Spring Data JPA => 추가안하면 import 안됨
+import org.springframework.data.jpa.repository.JpaRepository;  
+
+import com.example.springBoot_basic.dto.ProductDTO;
+
+// extends JpaRepository<dto Type, id Type>
+public interface ProductRepository extends JpaRepository<ProductDTO, Integer> {
+
+}
+
+
+---------------------------------------------------
+10. service > ProductService.java / ProductServiceImpl.java 
+   
+package com.example.springBoot_basic.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.springBoot_basic.dao.ProductRepository;
+import com.example.springBoot_basic.dto.ProductDTO;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+	
+	@Autowired
+	ProductRepository dao;
+
+	// list
+	@Override
+	public List<ProductDTO> listAll() {
+		return dao.findAll();
+	}
+
+	// insert : pk가 존재하지 않을때 insert
+	// update : pk가 존재할 때 해당키의 데이터를 update
+	@Override
+	public void save(ProductDTO dto) {
+		dao.save(dto);
+	}
+
+	// 1건 select
+	@Override
+	public ProductDTO get(int id) {
+		return dao.findById(id).get();
+	}
+
+	// 1건 delete
+	@Override
+	public void delete(int id) {
+		dao.deleteById(id);
+	}
+	
+}
+
+    
+    
+11. 테이블과 serviceImpl의 jpa 메서드
+
+DROP TABLE mvc_product_tbl CASCADE CONSTRAINTS;
+CREATE TABLE mvc_product_tbl(
+	id		number(5)    PRIMARY KEY,
+	name    varchar2(50) NOT NULL,
+	brand   varchar2(50) NOT NULL,
+	madein  varchar2(50) NOT NULL,
+	price   number(9)    NOT NULL
+);
+
+
+-- dao.findAll()
+SELECT * FROM MVC_PRODUCT_TBL;   
+
+
+-- dao.save(dto)
+INSERT INTO mvc_product_tbl(id, name, brand, madein, price)  
+ VALUES(1, 'lg-gram', 'lg', 'korea', 2000000);
+
+INSERT INTO mvc_product_tbl(id, name, brand, madein, price)  
+ VALUES(2, '트롬세탁기', 'lg', 'korea', 1000000);
+
+INSERT INTO mvc_product_tbl(id, name, brand, madein, price)  
+ VALUES(3, '아이폰', 'apple', 'america', 900000);
+ 
+COMMIT;
+
+
+-- dao.findById(id).get();
+SELECT * FROM MVC_PRODUCT_TBL
+ WHERE id=1;
+
+
+-- dao.deleteById(id)
+DELETE FROM mvc_product_tbl
+WHERE id=3;
+
+COMMIT;
+
+   
+   ----------------------------------------
+   
+ 12. ProductController.java 수정 => 서비스 호출
+@Controller
+public class ProductController {
+	
+	@Autowired
+	private ProductServiceImpl service;
+	
+	// List
+	// http://localhost:8081
+	@RequestMapping("/")
+	public String indexHome(Model model) {
+		
+		List<ProductDTO> list = service.listAll();
+		model.addAttribute("list", list);
+		
+		return "index";		//타임리프 템플릿 => templates/index.html
+	}
+}	
